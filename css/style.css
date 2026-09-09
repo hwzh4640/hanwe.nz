@@ -221,3 +221,36 @@ a:focus-visible, button:focus-visible { outline: 2px solid #bbabff; outline-offs
 .code-fragment { position: absolute; opacity: .25; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre; text-shadow: 0 0 15px currentColor; will-change: transform; }
 @media (max-width: 700px) { .content { padding-top: 95px; padding-bottom: 85px; max-width: 460px; } .code-fragment { font-size: 9px; opacity: .2; }  .space-mark { left: 22px; top: 22px; } #motion-toggle { bottom: 15px; right: 15px; } }
 @media (prefers-reduced-motion: reduce) { .code-fragment { animation: none; } .link-btn, .social-icons a { transition: none; } }
+
+/* Fit the profile to the viewport while keeping short screens accessible. */
+html { min-height: 100%; }
+body { min-height: 100svh; }
+.content {
+  --fit: clamp(0px, calc((100svh - 480px) / 25), 12px);
+  min-height: 100svh;
+  width: 100%;
+  padding: max(42px, env(safe-area-inset-top)) 20px max(52px, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.orbit-label { margin-bottom: calc(8px + var(--fit)); font-size: 9px; letter-spacing: 2px; }
+.profile-section { margin-bottom: calc(10px + var(--fit)); }
+.profile-photo { width: clamp(56px, 12svh, 100px); height: clamp(56px, 12svh, 100px); margin-bottom: calc(var(--fit) / 2); }
+.name { font-size: clamp(23px, 4svh, 32px); line-height: 1.15; }
+.tagline { font-size: 12px; line-height: 1.5; }
+.links { gap: calc(5px + var(--fit) / 2); margin-bottom: calc(10px + var(--fit)); }
+.link-btn { min-height: 40px; padding: calc(7px + var(--fit) / 2) 20px; }
+.link-btn span { font-size: 15px; }
+.social-icons { gap: 18px; margin-bottom: calc(8px + var(--fit) / 2); }
+.social-icons a { width: 34px; height: 34px; font-size: 16px; }
+footer { font-size: 11px; }
+@media (max-height: 520px) and (min-width: 600px) {
+  .content { max-width: 850px; display: grid; grid-template-columns: 1fr 1.3fr; gap: 8px 36px; align-content: center; padding: 40px 32px; }
+  .orbit-label { grid-column: 1; margin: 0; align-self: end; }
+  .profile-section { grid-column: 1; grid-row: 2; margin: 0; }
+  .links { grid-column: 2; grid-row: 1 / 5; margin: 0; }
+  .social-icons { grid-column: 1; margin: 0; }
+  footer { grid-column: 1; }
+  .profile-photo { width: 64px; height: 64px; }
+}
