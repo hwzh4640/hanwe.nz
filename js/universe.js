@@ -128,7 +128,11 @@
     if (!paused && !document.hidden) frame = requestAnimationFrame(draw);
   }
   function resize() {
-    width = innerWidth; height = innerHeight;
+    // Measure the backdrop itself: it is full-bleed (100lvh, under the safe areas),
+    // which is taller than innerHeight whenever the iOS toolbars are showing.
+    const box = canvas.getBoundingClientRect();
+    width = Math.round(box.width) || innerWidth;
+    height = Math.round(box.height) || innerHeight;
     const dpr = Math.min(devicePixelRatio || 1,2);
     canvas.width = width*dpr; canvas.height = height*dpr;
     ctx.setTransform(dpr,0,0,dpr,0,0);
@@ -145,5 +149,6 @@
   document.addEventListener('visibilitychange',() => {cancelAnimationFrame(frame); last=0; if (!document.hidden) draw(performance.now());});
   addEventListener('pointermove',e => {if (!paused) pointer = {x:e.clientX/width-.5,y:e.clientY/height-.5};});
   addEventListener('resize',resize);
+  addEventListener('orientationchange',() => setTimeout(resize,200));
   resize(); sync();
 })();

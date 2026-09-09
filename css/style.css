@@ -212,8 +212,6 @@ body { background: #040510; }
 .link-btn i:first-child { color: #c6b7f4; }
 .social-icons { gap: 18px; margin-bottom: 28px; }
 .social-icons a { background: rgba(15,18,37,.55); width: 40px; height: 40px; font-size: 17px; }
-.orbit-label { text-align: center; font: 10px ui-monospace, SFMono-Regular, monospace; letter-spacing: 3px; color: #aba0cf; margin-bottom: 22px; }
-.orbit-label::before { content: ''; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: #9fe6de; box-shadow: 0 0 12px #9fe6de; margin-right: 10px; vertical-align: 2px; }
 .space-mark { position: absolute; top: 28px; left: 32px; z-index: 1; font: 12px ui-monospace, monospace; color: #b6b4ce; letter-spacing: 2px; }
 .space-mark span { color: #716e8b; }
 #motion-toggle { position: fixed; bottom: 22px; right: 24px; z-index: 3; color: #b7b1cd; background: #090c1cc9; border: 1px solid #ffffff20; padding: 10px 14px; border-radius: 30px; font: 11px ui-monospace, monospace; cursor: pointer; }
@@ -234,7 +232,6 @@ body { min-height: 100svh; }
   flex-direction: column;
   justify-content: center;
 }
-.orbit-label { margin-bottom: calc(8px + var(--fit)); font-size: 9px; letter-spacing: 2px; }
 .profile-section { margin-bottom: calc(10px + var(--fit)); }
 .profile-photo { width: clamp(56px, 12svh, 100px); height: clamp(56px, 12svh, 100px); margin-bottom: calc(var(--fit) / 2); }
 .name { font-size: clamp(23px, 4svh, 32px); line-height: 1.15; }
@@ -247,10 +244,30 @@ body { min-height: 100svh; }
 footer { font-size: 11px; }
 @media (max-height: 520px) and (min-width: 600px) {
   .content { max-width: 850px; display: grid; grid-template-columns: 1fr 1.3fr; gap: 8px 36px; align-content: center; padding: 40px 32px; }
-  .orbit-label { grid-column: 1; margin: 0; align-self: end; }
-  .profile-section { grid-column: 1; grid-row: 2; margin: 0; }
-  .links { grid-column: 2; grid-row: 1 / 5; margin: 0; }
+  .profile-section { grid-column: 1; grid-row: 1; margin: 0; }
+  .links { grid-column: 2; grid-row: 1 / 4; margin: 0; }
   .social-icons { grid-column: 1; margin: 0; }
   footer { grid-column: 1; }
   .profile-photo { width: 64px; height: 64px; }
+}
+
+/* Safe areas: the page is viewport-fit=cover, so the sky must paint edge to edge
+   (behind the Dynamic Island / home indicator) while the UI stays inset. */
+html { background: #040510; }
+.header-bg {
+  height: 100%;
+  height: 100lvh; /* stay full-bleed while iOS collapses its toolbars */
+}
+.space-mark {
+  top: calc(env(safe-area-inset-top) + 22px);
+  left: calc(env(safe-area-inset-left) + 22px);
+}
+#motion-toggle {
+  bottom: calc(env(safe-area-inset-bottom) + 15px);
+  right: calc(env(safe-area-inset-right) + 15px);
+}
+.content { padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); }
+@media (min-width: 701px) {
+  .space-mark { top: calc(env(safe-area-inset-top) + 28px); left: calc(env(safe-area-inset-left) + 32px); }
+  #motion-toggle { bottom: calc(env(safe-area-inset-bottom) + 22px); right: calc(env(safe-area-inset-right) + 24px); }
 }
