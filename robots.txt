@@ -1,0 +1,3 @@
+# All crawlers, including search engines, AI training bots, and data harvesters.
+User-agent: *
+Disallow: /
